@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Preact + HTM</title>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
+  >
+</head>
+<body>
+  <script type="module">
+    import { h, Component, render } from 'https://unpkg.com/preact?module';
+    import htm from 'https://unpkg.com/htm?module';
+
+    const html = htm.bind(h);
+
+    class App extends Component {
+      constructor() {
+        super();
+        this.state = { items: [] };
+      }
+
+      componentDidMount() {
+        fetch('/items')
+          .then(res => res.json())
+          .then(items => this.setState({ items }));
+      }
+
+      render() {
+        return html`
+		  <div class="container">
+          <div class="content">
+		  <div class="hero">
+            <h1 style="margin-top:3em;">SPRING BOOT WEB DEMO</h1>
+		  
+		    <div class="card is-light" style="padding:2em;"><p>This project demonstrates a number of technologies.</p>
+		  <ul>
+		  <li>...</li>
+		  <li>...</li>
+		  <li>...</li>
+		  </ul>
+		  </div>
+		  <div class="button-group"><a href="/additem" class="button is-primary"> Add Items </a></div>
+		  <h3>Items</h3>
+            <ul>
+              ${this.state.items.map(item => html`
+                <li key=${item.id}>${item.name}</li>
+              `)}
+            </ul>
+			  
+          </div>
+			  </div>
+			  </div>
+        `;
+      }
+    }
+
+    render(html`<${App} />`, document.body);
+  </script>
+</body>
+</html>
