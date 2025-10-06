@@ -40,7 +40,11 @@
 		  <li>...</li>
 		  </ul>
 		  </div>
-		  <div class="button-group"><a href="/additem" class="button is-primary"> Add Items </a></div>
+		  <div class="button-group"><a href="/additem" class="button is-primary"> Add Items </a>
+		  <form action="/perform_logout" method="post">
+			  <button type="submit" class="button is-danger">Logout</button>
+		  </form>
+		  </div>
 		  <h3>Items</h3>
             <ul>
               ${this.state.items.map(item => html`
