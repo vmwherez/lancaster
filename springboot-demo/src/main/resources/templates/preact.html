@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spring Boot Web Demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+</head>
+<body>
+  <script type="module">
+    import { h, Component, render } from 'https://unpkg.com/preact?module';
+    import htm from 'https://unpkg.com/htm?module';
+    const html = htm.bind(h);
+
+    class App extends Component {
+      constructor() {
+        super();
+        this.state = { items: [] };
+      }
+
+      componentDidMount() {
+        fetch('/items')
+          .then(res => res.json())
+          .then(items => this.setState({ items }));
+      }
+
+      render() {
+        return html`
+          <section class="section">
+            <div class="container">
+              <div class="hero">
+                <div class="hero-body">
+                  <h1 class="title is-2 has-text-centered">Spring Boot Web Demo</h1>
+                </div>
+              </div>
+
+              <div class="box has-background-light mb-5">
+                <div class="content">
+                  <p class="is-size-5">This project demonstrates a number of technologies:</p>
+                  <ul>
+                    <li>Spring Boot: JPA, Security...</li>
+                    <li>Preact + HTM</li>
+                    <li>Typescript + React</li>
+		            <li>Bulma CSS</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="buttons mb-5">
+                <a href="/additem" class="button is-primary">
+                  <span>Add Items</span>
+                </a>
+                <form action="/perform_logout" method="post" style="display: inline;">
+                  <button type="submit" class="button is-danger">
+                    <span>Logout</span>
+                  </button>
+                </form>
+              </div>
+
+              <div class="box">
+                <h2 class="title is-4">Items</h2>
+                <div class="content">
+                  ${this.state.items.length > 0 
+                    ? html`
+                      <ul>
+                        ${this.state.items.map(item => html`
+                          <li key=${item.id}>${item.name}</li>
+                        `)}
+                      </ul>
+                    `
+                    : html`<p class="has-text-grey-light">No items yet. Add some to get started!</p>`
+                  }
+                </div>
+              </div>
+            </div>
+          </section>
+        `;
+      }
+    }
+
+    render(html`<${App} />`, document.body);
+  </script>
+</body>
+</html>
